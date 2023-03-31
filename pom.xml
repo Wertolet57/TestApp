@@ -8,11 +8,11 @@
 		<version>2.7.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>ru.kata</groupId>
-	<artifactId>spring-boot_security-demo</artifactId>
+	<groupId>ru.kazmin</groupId>
+	<artifactId>TestApp</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>spring-boot_security-demo</name>
-	<description>Demo project for Spring Boot</description>
+	<name>TestApp</name>
+	<description>Test application</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
