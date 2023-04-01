@@ -18,14 +18,14 @@ public class Role implements GrantedAuthority {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Column
-    private String name;
+    private String authority;
 
     public Role(String authority) {
-        this.name = authority;
+        this.authority = authority;
     }
 
     @Override
     public String getAuthority() {
-        return name;
+        return authority;
     }
 }

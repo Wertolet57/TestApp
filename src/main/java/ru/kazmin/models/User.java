@@ -40,7 +40,7 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> authorities = new HashSet<>();
-        roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).forEach(authorities::add);
+        roles.stream().map(role -> new SimpleGrantedAuthority(role.getAuthority())).forEach(authorities::add);
         return authorities;
     }
 
