@@ -1,9 +1,11 @@
 package ru.kazmin.service.abstracts;
 
-import ru.kazmin.models.Bid;
 import ru.kazmin.models.User;
 
+import java.util.List;
+
 public interface UserService {
-    User getUser(Long id);
-    void createBid(Bid bid);
+    void setOperatorRole(User user);
+    List<User> getUsers();
+    User getUser(String username);
 }

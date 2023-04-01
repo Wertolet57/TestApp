@@ -1,6 +1,7 @@
 package ru.kazmin.models;
 
 import lombok.*;
+import org.hibernate.Hibernate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,7 +21,7 @@ import java.util.Set;
 @Table(name = "user")
 public class User implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
@@ -30,7 +31,7 @@ public class User implements UserDetails {
     @Column
     private String username;
 
-    @ManyToMany(fetch = FetchType.EAGER, targetEntity = Role.class, cascade = {CascadeType.PERSIST})
+    @ManyToMany(fetch = FetchType.LAZY, targetEntity = Role.class, cascade = {CascadeType.PERSIST})
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -43,7 +44,9 @@ public class User implements UserDetails {
         roles.stream().map(role -> new SimpleGrantedAuthority(role.getAuthority())).forEach(authorities::add);
         return authorities;
     }
-
+    public void addRole(Role role) {
+        roles.add(role);
+    }
     @Override
     public String getUsername() {
         return username;

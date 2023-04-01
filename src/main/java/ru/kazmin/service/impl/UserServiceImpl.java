@@ -10,6 +10,8 @@ import ru.kazmin.models.Bid;
 import ru.kazmin.models.User;
 import ru.kazmin.service.abstracts.UserService;
 
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
 
@@ -21,13 +23,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public User getUser(Long id) {
-        return userDao.getUser(id);
+    public void setOperatorRole(User user) {
+        userDao.setOperatorRole(user);
     }
 
     @Override
-    public void createBid(Bid bid) {
+    public List<User> getUsers() {
+        return userDao.getUsers();
+    }
 
+    @Override
+    public User getUser(String username) {
+        return (User) loadUserByUsername(username);
     }
 
     @Override

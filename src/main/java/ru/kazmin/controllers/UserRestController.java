@@ -20,7 +20,7 @@ public class UserRestController {
 
     @PostMapping()
     public ResponseEntity<HttpStatus> createBid(@RequestBody Bid bid) {
-        userService.createBid(bid);
+        //userService.createBid(bid);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 }

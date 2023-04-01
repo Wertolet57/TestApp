@@ -1,11 +1,11 @@
 package ru.kazmin.models;
 
 import javax.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
+
+import java.util.Set;
 
 @Entity
 @Getter
@@ -15,7 +15,7 @@ import org.springframework.security.core.GrantedAuthority;
 @Table(name = "role")
 public class Role implements GrantedAuthority {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column
     private String authority;
@@ -24,8 +24,4 @@ public class Role implements GrantedAuthority {
         this.authority = authority;
     }
 
-    @Override
-    public String getAuthority() {
-        return authority;
-    }
 }
