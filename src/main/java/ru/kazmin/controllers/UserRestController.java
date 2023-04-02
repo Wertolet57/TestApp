@@ -38,9 +38,7 @@ public class UserRestController {
 
     @PatchMapping("/update")
     public ResponseEntity<HttpStatus> updateBid(@RequestBody Bid bid) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = (User) authentication.getPrincipal();
-        return bidService.updateBid(user, bid)?ResponseEntity.ok(HttpStatus.OK):ResponseEntity.ok(HttpStatus.BAD_REQUEST);
+        return bidService.updateBid(bid)?ResponseEntity.ok(HttpStatus.OK):ResponseEntity.ok(HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping("/create")

@@ -1,8 +1,9 @@
 package ru.kazmin.dao.impl;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 import ru.kazmin.dao.abstracts.BidDao;
 import ru.kazmin.models.Bid;
 import ru.kazmin.models.User;
@@ -33,7 +34,9 @@ public class BidDaoImpl implements BidDao {
     }
 
     @Override
-    public boolean updateBid(User user, Bid bid) {
+    public boolean updateBid(Bid bid) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
         List<Bid> bidOld = entityManager.createQuery("from Bid b where b.id = :id")
                 .setParameter("id",bid.getId()).getResultList();
         if (!bidOld.isEmpty() &&
@@ -58,9 +61,13 @@ public class BidDaoImpl implements BidDao {
                 str = "order by b.time desc";
                 break;
         }
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
         return entityManager.createQuery("select b.id, b.user.id, b.state, b.essence, b.time " +
                         "from Bid b " +
+                        "where b.user.id = :user_id" +
                         str)
+                .setParameter("user_id", user.getId())
                 .setFirstResult(first)
                 .setMaxResults(5)
                 .getResultList();

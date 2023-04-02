@@ -29,8 +29,8 @@ public class BidServiceImpl implements BidService {
     }
 
     @Override
-    public boolean updateBid(User user, Bid bid) {
-        return bidDao.updateBid(user, bid);
+    public boolean updateBid(Bid bid) {
+        return bidDao.updateBid(bid);
     }
 
     @Override

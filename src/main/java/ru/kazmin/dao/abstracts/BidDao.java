@@ -10,7 +10,7 @@ public interface BidDao {
 
     void sendBid(Long id);
 
-    boolean updateBid(User user, Bid bid);
+    boolean updateBid(Bid bid);
 
     List<Bid> getBids(int sort, int first);
 
