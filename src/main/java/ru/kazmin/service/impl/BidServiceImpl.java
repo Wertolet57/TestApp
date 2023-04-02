@@ -19,8 +19,8 @@ public class BidServiceImpl implements BidService {
     }
 
     @Override
-    public void createBid(Long id, Bid bid) {
-        bidDao.createBid(id, bid);
+    public void createBid(Bid bid) {
+        bidDao.createBid(bid);
     }
 
     @Override

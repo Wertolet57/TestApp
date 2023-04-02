@@ -20,7 +20,9 @@ public class BidDaoImpl implements BidDao {
     private EntityManager entityManager;
 
     @Override
-    public void createBid(Long id, Bid bid) {
+    public void createBid(Bid bid) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Long id = ((User) authentication.getPrincipal()).getId();
         User user = entityManager.find(User.class, id);
         user.addBid(bid);
         bid.setUser(user);

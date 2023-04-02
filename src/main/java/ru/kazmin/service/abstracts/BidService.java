@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface BidService {
 
-    void createBid(Long id, Bid bid);
+    void createBid(Bid bid);
 
     void sendBid(Long id);
 

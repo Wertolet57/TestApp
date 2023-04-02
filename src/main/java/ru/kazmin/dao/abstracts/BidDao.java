@@ -6,7 +6,7 @@ import ru.kazmin.models.User;
 import java.util.List;
 
 public interface BidDao {
-    void createBid(Long id, Bid bid);
+    void createBid(Bid bid);
 
     void sendBid(Long id);
 

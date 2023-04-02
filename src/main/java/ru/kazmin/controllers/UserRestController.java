@@ -43,9 +43,7 @@ public class UserRestController {
 
     @PostMapping("/create")
     public ResponseEntity<HttpStatus> createBid(@RequestBody Bid bid) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Long id = ((User) authentication.getPrincipal()).getId();
-        bidService.createBid(id, bid);
+        bidService.createBid(bid);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 }
