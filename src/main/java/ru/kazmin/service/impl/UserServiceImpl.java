@@ -6,7 +6,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.kazmin.dao.abstracts.UserDao;
-import ru.kazmin.models.Bid;
 import ru.kazmin.models.User;
 import ru.kazmin.service.abstracts.UserService;
 

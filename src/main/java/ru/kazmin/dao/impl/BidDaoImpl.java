@@ -31,8 +31,26 @@ public class BidDaoImpl implements BidDao {
     }
 
     @Override
-    public void sendBid(Long id) {
+    public boolean sendBid(Long id) {
         getBid(id).setState(State.SENT);
+        return true;
+    }
+
+    @Override
+    public boolean acceptedOrRejectBid(Long id, int action) {
+        Bid bid = getBid(id);
+        if (bid.getState().equals(State.SENT)) {
+            switch (action) {
+                case 1:
+                    bid.setState(State.ACCEPTED);
+                    break;
+                case 2:
+                    bid.setState(State.REJECTED);
+                    break;
+            }
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -54,6 +72,33 @@ public class BidDaoImpl implements BidDao {
 
     @Override
     public List<Bid> getBids(int sort, int first) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+        String conditions = "where b.user.id = " + user.getId();
+        return getBids(sort, first, conditions);
+    }
+
+    @Override
+    public Bid getBid(Long id) {
+        return entityManager.find(Bid.class, id);
+    }
+
+    @Override
+    public List<Bid> getSentBids(int sort, int first) {
+        String conditions = "where b.state = 'SENT'";
+        return getBids(sort,first, conditions);
+    }
+
+    @Override
+    public List<Bid> getSentBidsByUsername(String username, int sort, int first) {
+        StringBuilder conditions = new StringBuilder();
+        conditions.append("where b.state = 'SENT' and b.user.username = '");
+        conditions.append(username);
+        conditions.append("'");
+        return getBids(sort,first, conditions.toString());
+    }
+
+    private List<Bid> getBids(int sort, int first, String conditions) {
         String str = "";
         switch (sort) {
             case (1):
@@ -63,20 +108,12 @@ public class BidDaoImpl implements BidDao {
                 str = "order by b.time desc";
                 break;
         }
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = (User) authentication.getPrincipal();
         return entityManager.createQuery("select b.id, b.user.id, b.state, b.essence, b.time " +
                         "from Bid b " +
-                        "where b.user.id = :user_id" +
+                        conditions +
                         str)
-                .setParameter("user_id", user.getId())
                 .setFirstResult(first)
                 .setMaxResults(5)
                 .getResultList();
-    }
-
-    @Override
-    public Bid getBid(Long id) {
-        return entityManager.find(Bid.class, id);
     }
 }

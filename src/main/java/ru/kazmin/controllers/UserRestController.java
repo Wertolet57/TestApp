@@ -2,11 +2,8 @@ package ru.kazmin.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import ru.kazmin.models.Bid;
-import ru.kazmin.models.User;
 import ru.kazmin.service.abstracts.BidService;
 
 import java.util.List;
@@ -25,15 +22,14 @@ public class UserRestController {
         return bidService.getBid(id);
     }
 
-    @GetMapping("/bids{sort}/{first}")
+    @GetMapping("/bids/{sort}/{first}")
     public List<Bid> getBids(@PathVariable("sort") int sort, @PathVariable("first") int first) {
         return bidService.getBids(sort, first);
     }
 
     @PatchMapping("/sent{id}")
     public ResponseEntity<HttpStatus> sentBid(@PathVariable("id") Long id) {
-        bidService.sendBid(id);
-        return ResponseEntity.ok(HttpStatus.OK);
+        return bidService.sendBid(id)?ResponseEntity.ok(HttpStatus.OK):ResponseEntity.ok(HttpStatus.BAD_REQUEST);
     }
 
     @PatchMapping("/update")

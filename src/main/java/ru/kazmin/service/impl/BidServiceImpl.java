@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.kazmin.dao.abstracts.BidDao;
 import ru.kazmin.models.Bid;
-import ru.kazmin.models.User;
 import ru.kazmin.service.abstracts.BidService;
 
 import java.util.List;
@@ -24,8 +23,13 @@ public class BidServiceImpl implements BidService {
     }
 
     @Override
-    public void sendBid(Long id) {
-        bidDao.sendBid(id);
+    public boolean sendBid(Long id) {
+        return bidDao.sendBid(id);
+    }
+
+    @Override
+    public boolean acceptedOrRejectBid(Long id, int action) {
+        return bidDao.acceptedOrRejectBid(id, action);
     }
 
     @Override
@@ -41,5 +45,15 @@ public class BidServiceImpl implements BidService {
     @Override
     public Bid getBid(Long id) {
         return bidDao.getBid(id);
+    }
+
+    @Override
+    public List<Bid> getSentBids(int sort, int first) {
+        return bidDao.getSentBids(sort, first);
+    }
+
+    @Override
+    public List<Bid> getSentBidsByUsername(String username, int sort, int first) {
+        return bidDao.getSentBidsByUsername(username, sort, first);
     }
 }
