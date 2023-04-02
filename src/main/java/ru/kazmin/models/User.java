@@ -38,15 +38,25 @@ public class User implements UserDetails {
     @NonNull
     private Set<Role> roles;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private Set<Bid> bids;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> authorities = new HashSet<>();
         roles.stream().map(role -> new SimpleGrantedAuthority(role.getAuthority())).forEach(authorities::add);
         return authorities;
     }
+
     public void addRole(Role role) {
         roles.add(role);
     }
+
+    public void addBid(Bid bid) {
+        bid.setUser(this);
+        bids.add(bid);
+    }
+
     @Override
     public String getUsername() {
         return username;

@@ -2,25 +2,52 @@ package ru.kazmin.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
 import ru.kazmin.models.Bid;
-import ru.kazmin.service.abstracts.UserService;
+import ru.kazmin.models.User;
+import ru.kazmin.service.abstracts.BidService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/user")
 public class UserRestController {
-    private final UserService userService;
+    private final BidService bidService;
 
-    public UserRestController(UserService userService) {
-        this.userService = userService;
+    public UserRestController(BidService bidService) {
+        this.bidService = bidService;
     }
 
-    @PostMapping()
+    @GetMapping("/{id}")
+    public Bid getBid(@PathVariable("id") Long id) {
+        return bidService.getBid(id);
+    }
+
+    @GetMapping("/bids{sort}/{first}")
+    public List<Bid> getBids(@PathVariable("sort") int sort, @PathVariable("first") int first) {
+        return bidService.getBids(sort, first);
+    }
+
+    @PatchMapping("/sent{id}")
+    public ResponseEntity<HttpStatus> sentBid(@PathVariable("id") Long id) {
+        bidService.sendBid(id);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @PatchMapping("/update")
+    public ResponseEntity<HttpStatus> updateBid(@RequestBody Bid bid) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+        return bidService.updateBid(user, bid)?ResponseEntity.ok(HttpStatus.OK):ResponseEntity.ok(HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping("/create")
     public ResponseEntity<HttpStatus> createBid(@RequestBody Bid bid) {
-        //userService.createBid(bid);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Long id = ((User) authentication.getPrincipal()).getId();
+        bidService.createBid(id, bid);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 }
